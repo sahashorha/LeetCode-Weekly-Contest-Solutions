@@ -1,0 +1,55 @@
+class Solution {
+public:
+    void dfs(int node, vector<int>adj[], vector<int>&visited){
+        // make all node  
+        visited[node] = 1;
+        for(auto & it: adj[node]){
+            if(!visited[it]){
+                dfs(it,adj,visited);
+            }
+        }
+    }
+    vector<int> remainingMethods(int n, int k, vector<vector<int>>& invocations) {
+        // create a adjacency list 
+               vector<int> adj[n];
+        for(auto it: invocations){
+            adj[it[0]].push_back(it[1]);
+        }
+
+        // call dfs and mark all nodes or visited all nodes are connected by k
+        // directly and indirectly
+        // create a visited array
+        vector<int> visited(n,0);
+        dfs(k,adj,visited);
+        bool suspecious = true;
+        for(int i=0;i<n;i++){
+            if(!visited[i]){
+                for(auto it :adj[i]){
+                    //if an outside node invokes a node within group 
+                    //then mark suspecious as false
+                    if(visited[it]) suspecious =false;
+                }
+            }
+        }
+        // create a ans vector
+        vector<int>ans;
+        if(suspecious){
+            // remove all the suspecious node 
+            // which are present in node
+            // follow example number 2
+            // follow example number 3 also
+            for(int i =0;i<n;i++){
+                if(!visited[i]) ans.push_back(i);
+            }
+        }
+        else{
+            // add all the nodes since there is no suspecious group
+            // follow example number 1;
+            for(int i =0;i<n;i++){
+                ans.push_back(i);
+            }
+        }
+        return ans;
+
+    }
+};
